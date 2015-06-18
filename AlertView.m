@@ -2,9 +2,8 @@
 #import <objc/runtime.h>
 
 
-@interface AlertView ()
+@interface AlertView()
 
-@property (nonatomic, strong) UIAlertView* view;
 @property (nonatomic, strong) id dismissTag;
 
 @end
@@ -16,6 +15,7 @@
                   message:(NSString*)message
         cancelButtonTitle:(NSString*)cancelButtonTitle
         otherButtonTitles:(NSArray*)otherButtonTitles
+           alertViewStyle:(UIAlertViewStyle)alertViewStyle
                 onDismiss:(DismissBlock)dismissBlock {
     AlertView* alertView = [[AlertView alloc] init];
     alertView.view = [[UIAlertView alloc] initWithTitle:title
@@ -29,6 +29,7 @@
     for (NSString* buttonTitle in otherButtonTitles) {
         [alertView.view addButtonWithTitle:buttonTitle];
     }
+    alertView.view.alertViewStyle = alertViewStyle;
 
     [alertView.view show];
 }
@@ -41,6 +42,7 @@
                           message:message
                 cancelButtonTitle:cancelButtonTitle
                 otherButtonTitles:nil
+                   alertViewStyle:UIAlertViewStyleDefault
                         onDismiss:dismissBlock];
 }
 
@@ -51,6 +53,7 @@
                           message:message
                 cancelButtonTitle:cancelButtonTitle
                 otherButtonTitles:nil
+                   alertViewStyle:UIAlertViewStyleDefault
                         onDismiss:nil];
 }
 
@@ -64,7 +67,7 @@
 +(void)alertView:(UIAlertView*)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     DismissBlock dismissBlock = objc_getAssociatedObject(alertView, @selector(dismissTag));
     if (dismissBlock) {
-        dismissBlock(buttonIndex); // cancel button is button 0
+        dismissBlock(alertView, buttonIndex); // cancel button is button 0
     }
 }
 

@@ -2,7 +2,7 @@
 #import <UIKit/UIKit.h>
 
 
-typedef void (^DismissBlock)(NSInteger buttonIndex);
+typedef void (^DismissBlock)(UIAlertView* alertView, NSInteger buttonIndex);
 
 @interface AlertView : NSObject<UIAlertViewDelegate>
 
@@ -10,6 +10,7 @@ typedef void (^DismissBlock)(NSInteger buttonIndex);
                   message:(NSString*)message
         cancelButtonTitle:(NSString*)cancelButtonTitle
         otherButtonTitles:(NSArray*)otherButtonTitles
+           alertViewStyle:(UIAlertViewStyle)alertViewStyle
                 onDismiss:(DismissBlock)dismissBlock;  // cancel button will be buttonIndex==0
 
 +(void)alertViewWithTitle:(NSString*)title
@@ -23,5 +24,7 @@ typedef void (^DismissBlock)(NSInteger buttonIndex);
 
 +(void)alertViewWithTitle:(NSString*)title
                   message:(NSString*)message;
+
+@property (nonatomic, strong) UIAlertView* view;
 
 @end
